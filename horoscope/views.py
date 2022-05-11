@@ -16,6 +16,42 @@ dict_signs_zodiak = {
     "aquarius": "Водолей - одиннадцатый знак зодиака, планеты Уран и Сатурн (с 21 января по 19 февраля).",
     "pisces": "Рыбы - двенадцатый знак зодиака, планеты Юпитер (с 20 февраля по 20 марта)."
 }
+dict_zodiac_element = {
+    'fire': ['aries', 'leo', 'sagittarius'],
+    'earth': ['taurus', 'virgo', 'capricorn'],
+    'air': ['gemini', 'libra', 'aquarius'],
+    'water': ['cancer', 'scorpio', 'pisces']
+}
+
+
+def zodiac_element(request, element):
+    lst_element_zodiac = dict_zodiac_element.get(element)
+    if not lst_element_zodiac:
+        return HttpResponseNotFound(f'{element} - не стихия! К стихиям относятся - fire, earth, air, water')
+    li_element = ''
+    for elem in lst_element_zodiac:
+        redirect_path = reverse('horoscope-name', args=(elem,))
+        li_element += f"<li><a href='{redirect_path}'>{elem.title()}</a></li>"
+    respone = f"""
+    <ul>
+        {li_element} 
+    </ul>"""
+    return HttpResponse(respone)
+
+
+def type(request):
+    element_zodiac = list(dict_zodiac_element)
+    li_elements = ''
+    for type_element_sign_zodiac in element_zodiac:
+        redirect_path = reverse('type_name_element', args=(type_element_sign_zodiac,))
+        li_elements += f"<li><a href='{redirect_path}'>{type_element_sign_zodiac.title()}</a></li>"
+
+    respone = f"""
+    <ul>
+        {li_elements}
+    </ul>
+    """
+    return HttpResponse(respone)
 
 
 def index(request):
